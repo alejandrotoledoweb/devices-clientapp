@@ -35,13 +35,13 @@ const Devices = () => {
     <div className="">
       <h3 className="mt-3 mb-4">Enter the following information to create a new device</h3>
       <p className="mt-2">Enter the name of the device</p>
-      <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value)} placeholder="Alex Device" type="text"/> <br></br>
+      <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value.toUpperCase())} placeholder="Alex Device" type="text"/> <br></br>
       <p className="mt-2">Select the device type</p>
-      <select className="w-25 mb-3" id="input2" onChange={e => setType(e.target.value)} value="">
+      <select className="w-25 mb-3" id="input2" onChange={e => setType(e.target.value)} >
         <option value="">Select</option>
-        <option value="Windows_Workstation">Windows Workstation</option>
-        <option value="Windows_Server">Windows Server</option>
-        <option value="Mac">Mac</option>
+        <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
+        <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
+        <option value="MAC">MAC</option>
       </select><br></br>
       <p>Enter the disk capacity in GB</p>
       <input className="mb-3 rounded" id="input3" onChange={e => setCapacity(e.target.value)} type="number" placeholder="512"/><br></br>
