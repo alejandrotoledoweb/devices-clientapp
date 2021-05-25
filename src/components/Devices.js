@@ -9,6 +9,8 @@ const Devices = () => {
   const [capacity, setCapacity] = useState(0);
   const [deviceId, setDeviceId] = useState("");
 
+  const updateForm = document.getElementById("update-form");
+
 useEffect(() => {
   getDevices()
 }, [])
@@ -109,7 +111,7 @@ const updateDevice = () => {
             <p className="ml-3"><strong>Device Type:</strong> {device.type}</p>
             <p className="pl-2"><strong>HDD Capacity:</strong> {device.hdd_capacity} gb</p>
           </div>
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center justify-content-between">
             <button className="btn btn-secondary" onClick={() => selectDevice(device.system_name, device.type, device.hdd_capacity, device.id)}>Edit Device</button>
             <button className="btn btn-danger" onClick={() => deleteDevice(device.id)}>Delete device</button>
           </div>
@@ -118,11 +120,11 @@ const updateDevice = () => {
       </div>
       <div className="col-md-1"></div>
 
-      <div className="col-md-3 text-center">
+      <div className="col-md-3 text-center update-form" id="update-form">
         <div className="d-flex flex-column justify-content-around align-items-center border mt-5 pb-5 pt-4 pr-2 rounded">
           <h4 className="ml-2 pl-2 text-center">Update Form</h4>
           <p className="mt-4">Name of the device</p>
-          <input className="mt-2 mb-3" value={system_name} type="text" onChange={(e)=>setSystem(e.target.value)}/>
+          <input className="mt-2 mb-3" id="input1" value={system_name} type="text" onChange={(e)=>setSystem(e.target.value)}/>
           <p className="mt-2">Select the device type</p>
           <select className="w-100 mb-3" id="input2" onChange={e => setType(e.target.value)} value={type} >
             <option value="">Select</option>
@@ -131,7 +133,7 @@ const updateDevice = () => {
             <option value="MAC">MAC</option>
           </select><br></br>
           <p>Disk capacity in GB</p>
-          <input className="mt-2 mb-3" type="number" onChange={e => setCapacity(e.target.value)} value={capacity} />
+          <input className="mt-2 mb-3" id="input3" type="number" onChange={e => setCapacity(e.target.value)} value={capacity} />
           <button className="btn btn-dark mt-2" onClick={updateDevice}>Save Changes</button>
         </div>
       </div>
