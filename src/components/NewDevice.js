@@ -32,7 +32,7 @@ const Devices = () => {
 
 
   return (
-    <div className="container">
+    <div className="">
       <h3 className="mt-3 mb-4">Enter the following information to create a new device</h3>
       <p className="mt-2">Enter the name of the device</p>
       <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value)} placeholder="Alex Device" type="text"/> <br></br>
