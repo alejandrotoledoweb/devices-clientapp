@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 // import Filter from './Filter';
 
 const Devices = () => {
-  const [system, setSystem] = useState("");
-  const [type, setType] = useState("");
-  const [capacity, setCapacity] = useState("");
+    const [system, setSystem] = useState("");
+    const [type, setType] = useState("");
+    const [capacity, setCapacity] = useState("");
 
   const addDevice = () => {
     fetch("http://localhost:3000/devices", {
@@ -19,12 +19,21 @@ const Devices = () => {
       })
     }).then(response => response.json());
       // .then(newData => )
-  }
+    Array.from(document.querySelectorAll("input")).forEach(
+      input => (input.value = "")
+    );
+  };
+
+  // const handleReset = () => {
+  //   Array.from(document.querySelectorAll("input")).forEach(
+  //     input => (input.value = "")
+  //   );
+  // }
 
 
   return (
     <div className="container">
-      <h3 className="mt-3 mb-4">Enter the following information for create a new device</h3>
+      <h3 className="mt-3 mb-4">Enter the following information to create a new device</h3>
       <p className="mt-2">Enter the name of the device</p>
       <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value)} placeholder="Alex Device" type="text"/> <br></br>
       <p className="mt-2">Select the device type</p>
