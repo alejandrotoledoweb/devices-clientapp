@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 
 const Devices = () => {
   const [devices, setDevices] = useState([]);
-  const [loading, setLoading ] = useState(false);
+  const [loading, setLoading ] = useState(true);
   const [filter, setFilter] = useState("");
 
 useEffect(() => {
@@ -11,11 +11,12 @@ useEffect(() => {
   .then(response => response.json())
   .then(data => {
     setDevices(data)
+    setLoading(false)
   });
 }, [])
 
 if (loading) {
-  return <p>Loading Devices...</p>
+  return <p className="text-center">Loading Devices...</p>
 }
 
 const filteredDevices = devices.filter(devices => {
@@ -40,8 +41,8 @@ const filteredDevices = devices.filter(devices => {
 // }
 
   return (
-    <div className="container">
-      {/* <Filter size={this.state.size} sort={this.state.sort} handleChangeSize={this.handleChangeSize} handleChangeSort={this.handleChangeSort} count={devices.length}/> */}
+    <div className="container d-flex">
+      <div className="col-md-8">
       <select className="mt-3 mb-2" onChange={e => setFilter(e.target.value)}>
         <option value="">All</option>
         <option value="WINDOWS_WORKSTATION">Windows Workstation</option>
@@ -57,6 +58,12 @@ const filteredDevices = devices.filter(devices => {
           </div>
         </div>
       ))}
+      </div>
+
+      <div className="col-md-4">
+        <h4 className="ml-2 pl-2 text-center">Update Form</h4>
+      </div>
+      
       
     </div>
   );
