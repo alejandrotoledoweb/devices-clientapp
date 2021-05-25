@@ -6,7 +6,7 @@ const Devices = () => {
   const [filter, setFilter] = useState("");
   const [system_name, setSystem] = useState("");
   const [type, setType] = useState("");
-  const [capacity, setCapacity] = useState("");
+  const [capacity, setCapacity] = useState(0);
   const [deviceId, setDeviceId] = useState("");
 
 useEffect(() => {
@@ -49,6 +49,31 @@ const selectDevice = (system, type, capacity, id) => {
   setType(type);
   setCapacity(capacity);
   setDeviceId(id)
+}
+
+const cleanInputs = () => {
+  Array.from(document.querySelectorAll("input")).forEach(
+    input => (input.value = "")
+  );
+}
+
+const updateDevice = () => {
+    fetch(`http://localhost:3000/devices/${deviceId}`,{
+      method: "PUT",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        system_name: system_name,
+        type: type,
+        hdd_capacity: capacity
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        console.warn(data)
+        getDevices()
+      })
 }
 
 
@@ -97,17 +122,17 @@ const selectDevice = (system, type, capacity, id) => {
         <div className="d-flex flex-column justify-content-around align-items-center border mt-5 pb-5 pt-4 pr-2 rounded">
           <h4 className="ml-2 pl-2 text-center">Update Form</h4>
           <p className="mt-4">Name of the device</p>
-          <input className="mt-2 mb-3" type="text" />
+          <input className="mt-2 mb-3" value={system_name} type="text" onChange={(e)=>setSystem(e.target.value)}/>
           <p className="mt-2">Select the device type</p>
-          <select className="w-100 mb-3" id="input2" onChange={e => setType(e.target.value)} >
+          <select className="w-100 mb-3" id="input2" onChange={e => setType(e.target.value)} value={type} >
             <option value="">Select</option>
             <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
             <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
             <option value="MAC">MAC</option>
           </select><br></br>
           <p>Disk capacity in GB</p>
-          <input className="mt-2 mb-3" type="number" />
-          <button className="btn btn-dark mt-2">Save Changes</button>
+          <input className="mt-2 mb-3" type="number" onChange={e => setCapacity(e.target.value)} value={capacity} />
+          <button className="btn btn-dark mt-2" onClick={updateDevice}>Save Changes</button>
         </div>
       </div>
       
