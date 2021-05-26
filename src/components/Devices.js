@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
 
 const Devices = () => {
   const [devices, setDevices] = useState([]);
@@ -8,8 +11,10 @@ const Devices = () => {
   const [type, setType] = useState("");
   const [capacity, setCapacity] = useState(0);
   const [deviceId, setDeviceId] = useState("");
+  const [show, setShow] = useState(false);
 
-  const updateForm = document.getElementById("update-form");
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
 useEffect(() => {
   getDevices()
@@ -47,16 +52,11 @@ const selectDevice = (system, type, capacity, id) => {
   console.log(type);
   console.log(capacity);
   console.log(id);
+  handleShow();
   setSystem(system);
   setType(type);
   setCapacity(capacity);
   setDeviceId(id)
-}
-
-const cleanInputs = () => {
-  Array.from(document.querySelectorAll("input")).forEach(
-    input => (input.value = "")
-  );
 }
 
 const updateDevice = () => {
@@ -74,6 +74,7 @@ const updateDevice = () => {
     }).then(response => response.json())
       .then((data) => {
         console.warn(data)
+        handleClose();
         getDevices()
       })
 }
@@ -112,7 +113,7 @@ const updateDevice = () => {
             <p className="pl-2"><strong>HDD Capacity:</strong> {device.hdd_capacity} gb</p>
           </div>
           <div className="d-flex align-items-center justify-content-between">
-            <button className="btn btn-secondary" onClick={() => selectDevice(device.system_name, device.type, device.hdd_capacity, device.id)}>Edit Device</button>
+            <button className="btn btn-secondary mr-4" onClick={() => selectDevice(device.system_name, device.type, device.hdd_capacity, device.id)}>Edit Device</button>
             <button className="btn btn-danger" onClick={() => deleteDevice(device.id)}>Delete device</button>
           </div>
         </div>
@@ -120,13 +121,17 @@ const updateDevice = () => {
       </div>
       <div className="col-md-1"></div>
 
-      <div className="col-md-3 text-center update-form" id="update-form">
-        <div className="d-flex flex-column justify-content-around align-items-center border mt-5 pb-5 pt-4 pr-2 rounded">
-          <h4 className="ml-2 pl-2 text-center">Update Form</h4>
-          <p className="mt-4">Name of the device</p>
+      <Modal show={show} animation={false}>
+        <Modal.Header>
+          <Modal.Title>Update Form</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <div className="col-md-12 text-center update-form" id="update-form">
+        <div className="d-flex flex-column justify-content-around align-items-center border mt-2 pb-5 pt-4 pr-2 rounded">
+          <p className="mt-2">Name of the device</p>
           <input className="mt-2 mb-3" id="input1" value={system_name} type="text" onChange={(e)=>setSystem(e.target.value)}/>
           <p className="mt-2">Select the device type</p>
-          <select className="w-100 mb-3" id="input2" onChange={e => setType(e.target.value)} value={type} >
+          <select className="w-175 mb-3" id="input2" onChange={e => setType(e.target.value)} value={type} >
             <option value="">Select</option>
             <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
             <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
@@ -134,9 +139,20 @@ const updateDevice = () => {
           </select><br></br>
           <p>Disk capacity in GB</p>
           <input className="mt-2 mb-3" id="input3" type="number" onChange={e => setCapacity(e.target.value)} value={capacity} />
-          <button className="btn btn-dark mt-2" onClick={updateDevice}>Save Changes</button>
         </div>
       </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={updateDevice}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      
       
       
     </div>
