@@ -101,15 +101,15 @@ const filteredDevices = devices.filter(devices => {
 
 const handleChangeSort = (e) => {
   setSort(e)
-  console.log(sortCat)
+  console.log(e)
   setDevices(() => {
     switch (sortCat) {
     case "hdd":
-      return filteredDevices.sort((a, b) => a.hdd_capacity - b.hdd_capacity)
+      return devices.sort((a, b) => a.hdd_capacity - b.hdd_capacity)
     case "system":
-      return filteredDevices.sort((a, b) => a.system_name - b.system_name)
+      return devices.sort((a, b) => a.system_name - b.system_name)
     default:
-      return filteredDevices
+      return devices
   }})
   // console.log(sortCat)
   // if (sortCat !== "") {
@@ -129,7 +129,7 @@ const handleChangeSort = (e) => {
   return (
     <div className="container d-flex">
       <div className="col-md-8">
-        <FilterSort handleFilter={e => handleChangeFilter(e.target.value)} handleSort={e => handleChangeSort(e.target.value)} />
+        <FilterSort  handleFilter={e => handleChangeFilter(e.target.value)} handleSort={e => handleChangeSort(e.target.value)} />
         {filteredDevices.map((device, i) => (
           <div key={i} className="border rounded container mt-3 mb-3 d-flex justify-content-around">
             <div className="mt-3 mr-4 pr-4">

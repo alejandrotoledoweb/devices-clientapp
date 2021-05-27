@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FilterSort = ({ handleFilter, handleSort }) => {
+const FilterSort = ({ handleFilter, handleSort, count }) => {
 
   return (
     <>
+      <div></div>
       <select className="mt-1 mb-2 mr-2 pr-2" onChange={handleFilter}>
         <option value="">Device Type: All</option>
         <option value="WINDOWS_WORKSTATION">Device Type: Windows Workstation</option>
@@ -24,6 +25,7 @@ const FilterSort = ({ handleFilter, handleSort }) => {
 FilterSort.propTypes = {
   handleFilter: PropTypes.func.isRequired,
   handleSort: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
 };
 
 export default FilterSort;
