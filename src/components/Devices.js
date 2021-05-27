@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-
+import FilterSort from './FilterSort';
 
 const Devices = () => {
   const [devices, setDevices] = useState([]);
   const [loading, setLoading ] = useState(true);
-  const [filter, setFilter] = useState("");
   const [system_name, setSystem] = useState("");
   const [type, setType] = useState("");
   const [capacity, setCapacity] = useState(0);
   const [deviceId, setDeviceId] = useState("");
   const [show, setShow] = useState(false);
+  const [filterCat, setFilter] = useState("");
+  const [sortCat, setSort] = useState("");
+  // const [filteredDevices, setFilteredDevices] = useState([]);
+  // const [filteredDevices, setFilteredDevices] = useReducer(filterReducer, initialState);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -33,10 +36,6 @@ if (loading) {
   return <p className="text-center">Loading Devices...</p>
 }
 
-const filteredDevices = devices.filter(devices => {
-  return devices.type.includes(filter)
-})
-
 const deleteDevice = (id) => {
   fetch(`http://localhost:3000/devices/${id}`,{
     method: "DELETE",
@@ -48,10 +47,6 @@ const deleteDevice = (id) => {
 }
 
 const selectDevice = (system, type, capacity, id) => {
-  console.log(system);
-  console.log(type);
-  console.log(capacity);
-  console.log(id);
   handleShow();
   setSystem(system);
   setType(type);
@@ -79,45 +74,75 @@ const updateDevice = () => {
       })
 }
 
-
-// handleChangeSort(e){
-//   this.setState({sort: e.target.value});
-//   this.ListDevices();
+// const getFilterDevices = () => {
+//   setDevices(devices.filter(devices => {
+//     return devices.type.includes(filterCat)
+//    }))
 // }
 
-// ListDevices(){
-//   this.setState(state => {
-//     if(state.sort !== ''){
-//       devices.sort((a,b) => (state.sort === 'lowest') ? (a.hhd_capacity > b.hdd_capacity? 1:-1) : (a.hhd_capacity < b.hdd_capacity? 1:-1) )
-//     } else {
-//       state.devices.sort((a,b) => (a.id < b.id ? 1:-1));
-//     }
-//     return {filteredDevices: state.devices};
-//   })
-// }
+
+
+const handleChangeFilter = (e) => {
+  setFilter(e)
+  console.log(sortCat)
+
+  // if (sortCat !== "") {
+  //   if (sortCat ==='hdd') {
+  //     return setDevices(devices.sort((a, b) => a.hdd_capacity - b.hdd_capacity))
+  //   } else if (sortCat === "system") {
+  //     return setDevices(devices.sort((a, b) => a.system_name - b.system_name))
+  //   }
+  // }
+}
+
+const filteredDevices = devices.filter(devices => {
+  return devices.type.includes(filterCat)
+ })
+
+const handleChangeSort = (e) => {
+  setSort(e)
+  console.log(sortCat)
+  setDevices(() => {
+    switch (sortCat) {
+    case "hdd":
+      return filteredDevices.sort((a, b) => a.hdd_capacity - b.hdd_capacity)
+    case "system":
+      return filteredDevices.sort((a, b) => a.system_name - b.system_name)
+    default:
+      return filteredDevices
+  }})
+  // console.log(sortCat)
+  // if (sortCat !== "") {
+  //   if (sortCat === 'hdd') {
+  //     return setDevices(devices.sort((a, b) => a.hdd_capacity - b.hdd_capacity))
+  //   } else if (sortCat === "system") {
+  //     return setDevices(devices.sort((a, b) => a.system_name - b.system_name))
+  //   }
+  // } 
+  // return devices
+}
+
+// const filteredDevices = devices.filter(devices => {
+//   return devices.type.includes(filterCat)
+//  })
 
   return (
     <div className="container d-flex">
       <div className="col-md-8">
-      <select className="mt-1 mb-2" onChange={e => setFilter(e.target.value)}>
-        <option value="">Device Type: All</option>
-        <option value="WINDOWS_WORKSTATION">Device Type: Windows Workstation</option>
-        <option value="WINDOWS_SERVER">Device Type: Windows Server</option>
-        <option value="MAC">Device Type: Mac</option>
-      </select>
-      {filteredDevices.map((device, i) => (
-        <div key={i} className="border rounded container mt-3 mb-3 d-flex justify-content-around">
-          <div className="mt-3 mr-4 pr-4">
-            <p className="pl-2"><strong>Device System Name:</strong> {device.system_name}</p>
-            <p className="ml-3"><strong>Device Type:</strong> {device.type}</p>
-            <p className="pl-2"><strong>HDD Capacity:</strong> {device.hdd_capacity} gb</p>
+        <FilterSort handleFilter={e => handleChangeFilter(e.target.value)} handleSort={e => handleChangeSort(e.target.value)} />
+        {filteredDevices.map((device, i) => (
+          <div key={i} className="border rounded container mt-3 mb-3 d-flex justify-content-around">
+            <div className="mt-3 mr-4 pr-4">
+              <p className="pl-2"><strong>Device System Name:</strong> {device.system_name}</p>
+              <p className="ml-3"><strong>Device Type:</strong> {device.type}</p>
+              <p className="pl-2"><strong>HDD Capacity:</strong> {device.hdd_capacity} gb</p>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <button className="btn btn-secondary mr-4" onClick={() => selectDevice(device.system_name, device.type, device.hdd_capacity, device.id)}>Edit Device</button>
+              <button className="btn btn-danger" onClick={() => deleteDevice(device.id)}>Delete device</button>
+            </div>
           </div>
-          <div className="d-flex align-items-center justify-content-between">
-            <button className="btn btn-secondary mr-4" onClick={() => selectDevice(device.system_name, device.type, device.hdd_capacity, device.id)}>Edit Device</button>
-            <button className="btn btn-danger" onClick={() => deleteDevice(device.id)}>Delete device</button>
-          </div>
-        </div>
-      ))}
+        ))}
       </div>
       <div className="col-md-1"></div>
 
@@ -152,9 +177,6 @@ const updateDevice = () => {
         </Modal.Footer>
       </Modal>
 
-      
-      
-      
     </div>
   );
 }

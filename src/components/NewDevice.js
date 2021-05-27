@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-// import Filter from './Filter';
+import React, { useState } from 'react'
 
 const Devices = () => {
     const [system, setSystem] = useState("");
