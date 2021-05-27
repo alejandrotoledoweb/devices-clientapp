@@ -131,8 +131,8 @@ const handleChangeSort = (e) => {
       <div className="col-md-8">
         <FilterSort  handleFilter={e => handleChangeFilter(e.target.value)} handleSort={e => handleChangeSort(e.target.value)} />
         {filteredDevices.map((device, i) => (
-          <div key={i} className="border rounded container mt-3 mb-3 d-flex justify-content-around">
-            <div className="mt-3 mr-4 pr-4">
+          <div key={i} className="border rounded container mt-3 mb-3 pb-4 d-flex justify-content-around flex-wrap">
+            <div className="mt-4 mr-4 pr-4">
               <p className="pl-2"><strong>Device System Name:</strong> {device.system_name}</p>
               <p className="ml-3"><strong>Device Type:</strong> {device.type}</p>
               <p className="pl-2"><strong>HDD Capacity:</strong> {device.hdd_capacity} gb</p>
