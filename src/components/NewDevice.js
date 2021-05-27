@@ -44,7 +44,7 @@ const Devices = () => {
 
   return (
     <div className="mb-5 container">
-      <div className="col-lg-6 col-md-6 col-sm-6 d-flex flex-column">
+      <div className="col-lg-4 col-md-6 col-sm-6 d-flex flex-column">
       <h3 className="mt-3 mb-4">Enter the following information to create a new device</h3>
       <p className="mt-2">Enter the name of the device</p>
       <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value.toUpperCase())} placeholder="Alex Device" type="text" required/> <br></br>
