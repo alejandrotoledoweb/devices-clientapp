@@ -24,7 +24,7 @@ const Devices = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          system_name: system,
+          systenamem_name: system,
           type: type,
           hdd_capacity: capacity
         })
