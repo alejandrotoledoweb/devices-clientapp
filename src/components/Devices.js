@@ -2,102 +2,21 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import FilterSort from "./FilterSort";
+import { fetchDevices } from "../redux/actions/devicesActions";
 
-const Devices = () => {
-  const [devices, setDevices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [system_name, setSystem] = useState("");
-  const [type, setType] = useState("");
-  const [capacity, setCapacity] = useState(0);
-  const [deviceId, setDeviceId] = useState("");
-  const [show, setShow] = useState(false);
-  const [filterCat, setFilter] = useState("");
-  const [sortCat, setSort] = useState("");
-  // const [filteredDevices, setFilteredDevices] = useState([]);
-  // const [filteredDevices, setFilteredDevices] = useReducer(filterReducer, initialState);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const Devices = (devices, fetchAllDevices, loading) => {
 
   useEffect(() => {
-    getDevices();
+    dispatch(fetchAllDevices());
   }, []);
-
-  const getDevices = () => {
-    fetch("http://localhost:3000/devices")
-      .then((response) => response.json())
-      .then((data) => {
-        setDevices(data);
-        setLoading(false);
-      });
-  };
 
   if (loading) {
     return <p className="text-center">Loading Devices...</p>;
   }
 
-  const deleteDevice = (id) => {
-    fetch(`http://localhost:3000/devices/${id}`, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.warn(data);
-        getDevices();
-      });
-  };
-
-  const selectDevice = (system, type, capacity, id) => {
-    handleShow();
-    setSystem(system);
-    setType(type);
-    setCapacity(capacity);
-    setDeviceId(id);
-  };
-
-  const updateDevice = () => {
-    fetch(`http://localhost:3000/devices/${deviceId}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        system_name: system_name,
-        type: type,
-        hdd_capacity: capacity,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.warn(data);
-        handleClose();
-        getDevices();
-      });
-  };
-
   const handleChangeFilter = (e) => {
     setFilter(e);
     console.log(sortCat);
-  };
-
-  const filteredDevices = devices.filter((devices) => {
-    return devices.type.includes(filterCat);
-  });
-
-  const handleChangeSort = (e) => {
-    setSort(e);
-    console.log(e);
-    setDevices(() => {
-      switch (sortCat) {
-        case "hdd":
-          return devices.sort((a, b) => a.hdd_capacity - b.hdd_capacity);
-        case "system":
-          return devices.sort((a, b) => a.system_name - b.system_name);
-        default:
-          return devices;
-      }
-    });
   };
 
   return (
@@ -107,7 +26,7 @@ const Devices = () => {
           handleFilter={(e) => handleChangeFilter(e.target.value)}
           handleSort={(e) => handleChangeSort(e.target.value)}
         />
-        {filteredDevices.map((device, i) => (
+        {devices.map((device, i) => (
           <div
             key={i}
             className="border rounded container mt-3 mb-3 pb-4 d-flex justify-content-around flex-wrap"
@@ -201,4 +120,23 @@ const Devices = () => {
   );
 };
 
-export default Devices;
+Devices.defaultProps = {
+  fetchAllDevices: PropTypes.func,
+};
+
+Devices.propTypes = {
+  fetchAllDevices: PropTypes.func,
+  loading: PropTypes.bool.isRequired,
+  devices: PropTypes.arrayOf(Object).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  loading: state.allDevices.loading,
+  devices: state.allDevices.devices,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchAllDevices: () => dispatch(fetchDevices()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Devices);

@@ -1,6 +1,9 @@
-export const actionTypes = {
+const ActionTypes = {
   FETCH_DEVICES: "FETCH_DEVICES",
   SET_DEVICES: "SET_DEVICES",
   SELECTED_DEVICE: "SELECTED_DEVICE",
   DELETE_DEVICE: "DELETE_DEVICE",
+  SET_ERROR: "SET_ERROR",
 };
+
+export default ActionTypes;
