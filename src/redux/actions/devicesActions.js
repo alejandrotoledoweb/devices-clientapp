@@ -26,33 +26,6 @@ export const fetchDevices = () => async (dispatch) => {
       dispatch(setError(ActionTypes.SET_ERROR, error.message));
     })
   } catch (error) {
-    dispatch(requestFailure(ActionTypes.SET_ERROR, error.message));
-  }
-};
-
-
-
-
-
-
-export const fetchRestaurantsSuccess = (restaurants) => ({
-  type: FETCH_RESTAURANTS_SUCCESS,
-  payload: restaurants,
-});
-
-export const fetchRestaurants = () => (dispatch) => {
-  try {
-    dispatch(requestPending(FETCH_RESTAURANTS_PENDING));
-    Axios.get(`${API_URL}/restaurants`)
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch(fetchRestaurantsSuccess(response.data));
-        }
-      })
-      .catch((error) => {
-        dispatch(requestFailure(SET_ERROR, error.message));
-      });
-  } catch (error) {
-    dispatch(requestFailure(SET_ERROR, error.message));
+    dispatch(setError(ActionTypes.SET_ERROR, error.message));
   }
 };

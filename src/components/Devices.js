@@ -7,8 +7,8 @@ import { fetchDevices } from "../redux/actions/devicesActions";
 const Devices = (devices, fetchAllDevices, loading) => {
 
   useEffect(() => {
-    dispatch(fetchAllDevices());
-  }, []);
+    fetchAllDevices();
+  }, [fetchAllDevices]);
 
   if (loading) {
     return <p className="text-center">Loading Devices...</p>;
