@@ -1,13 +1,9 @@
 import apiUrl from "../constants/apiUrl";
 import ActionTypes from "../constants/actionTypes";
 
-export const requestPending = (actionType) => ({
+export const set_Error = (actionType, error) => ({
   type: actionType,
-});
-
-export const setError = (actionType, error) => ({
-  type: actionType,
-  payload: error,
+  payload: error.message,
 });
 
 export const setDevices = (devices) => ({
@@ -17,15 +13,19 @@ export const setDevices = (devices) => ({
 
 export const fetchDevices = () => async (dispatch) => {
   try {
-    dispatch(requestPending(ActionTypes.FETCH_DEVICES));
-    apiUrl.get("/devices").then((response) => {
-      if (response.status === 200) {
-        dispatch(setDevices(response.data));
-      }
-    }).catch((error) => {
-      dispatch(setError(ActionTypes.SET_ERROR, error.message));
-    })
+    const response = await apiUrl.get("/devices");
+    dispatch({ type: ActionTypes.SET_DEVICES, payload: response.data });
   } catch (error) {
-    dispatch(setError(ActionTypes.SET_ERROR, error.message));
+    dispatch(set_Error(ActionTypes.SET_ERROR, error));
+  }
+};
+
+export const deleteDevice = (id) => async (dispatch) => {
+  try {
+    const response = await apiUrl.delete(`/devices/${id}`);
+    dispatch({ type: ActionTypes.DELETE_DEVICE, payload: response.data });
+    dispatch({ type: ActionTypes.FILTER_DEVICES, payload: id });
+  } catch (error) {
+    dispatch(set_Error(ActionTypes.SET_ERROR, error));
   }
 };

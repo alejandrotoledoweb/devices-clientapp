@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { deviceReducer } from "./deviceReducer";
 
-const AppReducer = combineReducers({
+export const AppReducer = combineReducers({
   allDevices: deviceReducer,
 });
 
