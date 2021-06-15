@@ -4,6 +4,7 @@ export const ActionTypes = {
   DELETE_DEVICE: "DELETE_DEVICE",
   SET_ERROR: "SET_ERROR",
   FILTER_DEVICES: "FILTER_DEVICES",
+  CREATE_DEVICE: "CREATE_DEVICE",
 };
 
 export default ActionTypes;

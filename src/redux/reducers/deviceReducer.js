@@ -4,7 +4,7 @@ const initialState = {
   devices: [],
   loading: true,
   error: "",
-  deleteDevice: {},
+  status: "",
 };
 
 export const deviceReducer = (state = initialState, { type, payload }) => {
@@ -15,18 +15,21 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
         loading: false,
         devices: payload,
         error: "",
+        status: "set",
       };
     case ActionTypes.SET_ERROR:
       return {
         ...state,
         loading: false,
         error: payload,
+        status: "error",
       };
     case ActionTypes.DELETE_DEVICE:
       return {
         ...state,
         loading: false,
         error: "",
+        status: "deleted",
       };
     case ActionTypes.FILTER_DEVICES:
       return {
@@ -34,6 +37,14 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
         devices: state.devices.filter((device) => device.id !== payload),
         loading: false,
         error: "",
+        status: "filtered",
+      };
+    case ActionTypes.CREATE_DEVICE:
+      return {
+        ...state,
+        loading: false,
+        error: "",
+        status: "created",
       };
     default:
       return state;

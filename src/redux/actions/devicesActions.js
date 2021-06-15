@@ -29,3 +29,16 @@ export const deleteDevice = (id) => async (dispatch) => {
     dispatch(set_Error(ActionTypes.SET_ERROR, error));
   }
 };
+
+export const addDevice = (data) => async (dispatch) => {
+  try {
+    const response = await apiUrl.post("/devices", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    dispatch({ type: ActionTypes.CREATE_DEVICE, payload: response.data });
+  } catch (error) {
+    dispatch(set_Error(ActionTypes.SET_ERROR, error));
+  }
+};
