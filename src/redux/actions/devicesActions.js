@@ -3,12 +3,12 @@ import ActionTypes from "../constants/actionTypes";
 
 export const set_Error = (actionType, error) => ({
   type: actionType,
-  payload: error.message,
+  payload: error.message
 });
 
 export const setDevices = (devices) => ({
   type: ActionTypes.SET_DEVICES,
-  payload: devices,
+  payload: devices
 });
 
 export const fetchDevices = () => async (dispatch) => {
@@ -34,10 +34,23 @@ export const addDevice = (data) => async (dispatch) => {
   try {
     const response = await apiUrl.post("/devices", data, {
       headers: {
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
     dispatch({ type: ActionTypes.CREATE_DEVICE, payload: response.data });
+  } catch (error) {
+    dispatch(set_Error(ActionTypes.SET_ERROR, error));
+  }
+};
+
+export const editDevice = (system, type, capacity, id) => async (dispatch) => {
+  try {
+    const response = await apiUrl.put(`/devices/${id}`, {
+      system_name: system,
+      type: type,
+      hdd_capacity: capacity
+    });
+    dispatch({ type: ActionTypes.EDIT_DEVICE, payload: response.data });
   } catch (error) {
     dispatch(set_Error(ActionTypes.SET_ERROR, error));
   }

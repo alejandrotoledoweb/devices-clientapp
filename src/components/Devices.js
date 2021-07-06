@@ -1,15 +1,49 @@
-import React, { useEffect } from "react";
-import { fetchDevices, deleteDevice } from "../redux/actions/devicesActions";
+import React, { useEffect, useState } from "react";
+import {
+  fetchDevices,
+  deleteDevice,
+  editDevice
+} from "../redux/actions/devicesActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
-const Devices = ({ devices, loading, fetchAllDevices, deleteDevice }) => {
+const Devices = ({
+  devices,
+  loading,
+  fetchAllDevices,
+  deleteDevice,
+  updateDevice
+}) => {
+  const [system_name, setSystem] = useState("");
+  const [type, setType] = useState("");
+  const [capacity, setCapacity] = useState(0);
+  const [deviceId, setDeviceId] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+
   useEffect(() => {
     fetchAllDevices();
   }, [fetchAllDevices]);
 
   const deleteDv = (id) => {
     deleteDevice(id);
+  };
+
+  const selectDevice = (system, type, capacity, id) => {
+    handleShow();
+    setSystem(system);
+    setType(type);
+    setCapacity(capacity);
+    setDeviceId(id);
+  };
+
+  const udpateDev = (system, type, capacity, deviceId) => {
+    updateDevice(system, type, capacity, deviceId);
+    handleClose();
   };
 
   if (loading) {
@@ -39,7 +73,14 @@ const Devices = ({ devices, loading, fetchAllDevices, deleteDevice }) => {
               <button
                 type="button"
                 className="btn btn-secondary btn-sm ml-3 mr-3 "
-                onClick={() => deleteDv(device.id)}
+                onClick={() =>
+                  selectDevice(
+                    device.system_name,
+                    device.type,
+                    device.hdd_capacity,
+                    device.id
+                  )
+                }
               >
                 Edit Device
               </button>
@@ -55,6 +96,54 @@ const Devices = ({ devices, loading, fetchAllDevices, deleteDevice }) => {
         ))}
       </div>
       <div className="col-md-1"></div>
+      <Modal show={show} animation={false} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title>Update Form</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="col-md-12 text-center update-form" id="update-form">
+            <div className="d-flex flex-column justify-content-around align-items-center border mt-2 pb-5 pt-4 pr-2 rounded">
+              <p className="mt-2">Name of the device</p>
+              <input
+                className="mt-2 mb-3"
+                id="input1"
+                value={system_name}
+                type="text"
+                onChange={(e) => setSystem(e.target.value)}
+              />
+              <p className="mt-2">Select the device type</p>
+              <select
+                className="w-175 mb-3"
+                id="input2"
+                onChange={(e) => setType(e.target.value)}
+                value={type}
+              >
+                <option value="">Select</option>
+                <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
+                <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
+                <option value="MAC">MAC</option>
+              </select>
+              <br></br>
+              <p>Disk capacity in GB</p>
+              <input
+                className="mt-2 mb-3"
+                id="input3"
+                type="number"
+                onChange={(e) => setCapacity(e.target.value)}
+                value={capacity}
+              />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={udpateDev}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
@@ -62,23 +151,27 @@ const Devices = ({ devices, loading, fetchAllDevices, deleteDevice }) => {
 Devices.defaultProps = {
   fetchAllDevices: PropTypes.func,
   deleteDevice: PropTypes.func,
+  updateDevice: PropTypes.func
 };
 
 Devices.propTypes = {
   fetchAllDevices: PropTypes.func,
   deleteDevice: PropTypes.func,
+  updateDevice: PropTypes.func,
   loading: PropTypes.bool.isRequired,
-  devices: PropTypes.arrayOf(Object).isRequired,
+  devices: PropTypes.arrayOf(Object).isRequired
 };
 
 const mapStateToProps = (state) => ({
   loading: state.allDevices.loading,
-  devices: state.allDevices.devices,
+  devices: state.allDevices.devices
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAllDevices: () => dispatch(fetchDevices()),
   deleteDevice: (id) => dispatch(deleteDevice(id)),
+  updateDevice: (system_name, type, capacity, deviceId) =>
+    dispatch(editDevice(system_name, type, capacity, deviceId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Devices);
