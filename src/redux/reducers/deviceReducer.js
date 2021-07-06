@@ -48,7 +48,7 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
     case ActionTypes.FILTER_DEVICES:
       return {
         ...state,
-        devices: state.devices.filter((device) => device.type === payload),
+        devices: state.devices.filter((device) => device.id !== payload),
         loading: false,
         error: "",
         status: "filtered"
