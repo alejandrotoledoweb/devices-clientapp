@@ -41,8 +41,8 @@ const Devices = ({
     setDeviceId(id);
   };
 
-  const udpateDev = (system, type, capacity, deviceId) => {
-    updateDevice(system, type, capacity, deviceId);
+  const udpateDev = (system_name, type, capacity, deviceId) => {
+    updateDevice(system_name, type, capacity, deviceId);
     handleClose();
   };
 

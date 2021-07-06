@@ -45,11 +45,16 @@ export const addDevice = (data) => async (dispatch) => {
 
 export const editDevice = (system, type, capacity, id) => async (dispatch) => {
   try {
-    const response = await apiUrl.put(`/devices/${id}`, {
+    const body = {
       system_name: system,
       type: type,
       hdd_capacity: capacity
-    });
+    };
+
+    const headers = {
+      "Content-Type": "application/json"
+    };
+    const response = await apiUrl.put(`/devices/${id}`, body, { headers });
     dispatch({ type: ActionTypes.EDIT_DEVICE, payload: response.data });
   } catch (error) {
     dispatch(set_Error(ActionTypes.SET_ERROR, error));

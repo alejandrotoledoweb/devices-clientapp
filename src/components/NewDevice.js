@@ -10,20 +10,20 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
   const initialValues = {
     system_name: "",
     type: "",
-    hdd_capacity: "",
+    hdd_capacity: ""
   };
 
   const appointmentSchema = Yup.object().shape({
     system_name: Yup.string().required("System Name is required"),
     type: Yup.string().required("System Type is required"),
-    hdd_capacity: Yup.number().required("Capacity is required"),
+    hdd_capacity: Yup.number().required("Capacity is required")
   });
 
   const submitForm = (values) => {
     const data = {
       system_name: values.system_name,
       type: values.type,
-      hdd_capacity: values.hdd_capacity,
+      hdd_capacity: values.hdd_capacity
     };
     addDevice(data);
   };
@@ -37,6 +37,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
 
   return (
     <Formik
+      className="w-75"
       initialValues={initialValues}
       validationSchema={appointmentSchema}
       onSubmit={(values) => {
@@ -46,11 +47,13 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
       {(formik) => {
         const { errors, touched, isValid, dirty } = formik;
         return (
-          <div className="mt-5 pl-3 border-top pt-3">
+          <div className="mt-5 pl-3 border-top pt-3 w-75 mx-auto">
             <h6 className="my-4">Create a new device</h6>
             <Form>
               <div className="form-group">
-                <label htmlFor="system_name">Name of the System</label>
+                <label htmlFor="system_name" className="mb-3">
+                  Name of the System
+                </label>
                 <Field
                   type="string"
                   name="system_name"
@@ -70,8 +73,16 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="type">Select the type of the device:</label>
-                <Field name="type" as="select" className="my-select">
+                <label htmlFor="type" className="mt-3">
+                  Select the type of the device:
+                </label>
+                <Field
+                  name="type"
+                  as="select"
+                  className="my-select d-inline d-block mt-3 mb-3"
+                  placeholder="Select"
+                  value="select"
+                >
                   <option value="WINDOWS_WORKSTATION">
                     WINDOWS_WORKSTATION
                   </option>
@@ -87,7 +98,9 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="hdd_capacity">Name of the System</label>
+                <label htmlFor="hdd_capacity" className="mt-3 mb-3">
+                  Name of the System
+                </label>
                 <Field
                   type="number"
                   name="hdd_capacity"
@@ -106,7 +119,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
                 />
               </div>
 
-              <div>
+              <div className="mt-3">
                 <button
                   type="submit"
                   className={`${
@@ -128,20 +141,20 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
 };
 
 NewDevice.defaultProps = {
-  addDevice: PropTypes.func,
+  addDevice: PropTypes.func
 };
 
 NewDevice.propTypes = {
-  addDevice: PropTypes.func,
+  addDevice: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
   loading: state.allDevices.loading,
-  status: state.allDevices.status,
+  status: state.allDevices.status
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addDevice: (data) => dispatch(addDevice(data)),
+  addDevice: (data) => dispatch(addDevice(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewDevice);
