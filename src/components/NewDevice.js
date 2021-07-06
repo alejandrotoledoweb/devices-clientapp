@@ -25,6 +25,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
       type: values.type,
       hdd_capacity: values.hdd_capacity
     };
+    console.log(loading, status);
     addDevice(data);
   };
 
@@ -80,9 +81,8 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
                   name="type"
                   as="select"
                   className="my-select d-inline d-block mt-3 mb-3"
-                  placeholder="Select"
-                  value="select"
                 >
+                  <option defaultValue>Select Type</option>
                   <option value="WINDOWS_WORKSTATION">
                     WINDOWS_WORKSTATION
                   </option>
@@ -150,7 +150,8 @@ NewDevice.propTypes = {
 
 const mapStateToProps = (state) => ({
   loading: state.allDevices.loading,
-  status: state.allDevices.status
+  status: state.allDevices.status,
+  error: state.allDevices.error
 });
 
 const mapDispatchToProps = (dispatch) => ({

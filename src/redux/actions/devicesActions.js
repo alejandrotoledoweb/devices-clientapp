@@ -32,6 +32,7 @@ export const deleteDevice = (id) => async (dispatch) => {
 
 export const addDevice = (data) => async (dispatch) => {
   try {
+    dispatch({ type: ActionTypes.POST_REQUEST });
     const response = await apiUrl.post("/devices", data, {
       headers: {
         "Content-Type": "application/json"

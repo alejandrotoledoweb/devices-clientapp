@@ -31,6 +31,13 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
         error: "",
         status: "deleted"
       };
+    case ActionTypes.POST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: "",
+        status: "requested"
+      };
     case ActionTypes.CREATE_DEVICE:
       return {
         ...state,
