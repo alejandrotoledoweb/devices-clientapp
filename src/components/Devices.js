@@ -8,6 +8,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const Devices = ({
   devices,
@@ -24,6 +26,12 @@ const Devices = ({
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const initialValues = {
+    system_name: system_name,
+    type: type,
+    hdd_capacity: capacity
+  };
 
   useEffect(() => {
     fetchAllDevices();
@@ -101,39 +109,106 @@ const Devices = ({
           <Modal.Title>Update Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="col-md-12 text-center update-form" id="update-form">
-            <div className="d-flex flex-column justify-content-around align-items-center border mt-2 pb-5 pt-4 pr-2 rounded">
-              <p className="mt-2">Name of the device</p>
-              <input
-                className="mt-2 mb-3"
-                id="input1"
-                value={system_name}
-                type="text"
-                onChange={(e) => setSystem(e.target.value)}
-              />
-              <p className="mt-2">Select the device type</p>
-              <select
-                className="w-175 mb-3"
-                id="input2"
-                onChange={(e) => setType(e.target.value)}
-                value={type}
-              >
-                <option value="">Select</option>
-                <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
-                <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
-                <option value="MAC">MAC</option>
-              </select>
-              <br></br>
-              <p>Disk capacity in GB</p>
-              <input
-                className="mt-2 mb-3"
-                id="input3"
-                type="number"
-                onChange={(e) => setCapacity(e.target.value)}
-                value={capacity}
-              />
-            </div>
-          </div>
+          <Formik
+            className="w-75"
+            initialValues={initialValues}
+            validationSchema={appointmentSchema}
+            onSubmit={(values) => {
+              submitForm(values);
+            }}
+          >
+            {(formik) => {
+              const { errors, touched, isValid, dirty } = formik;
+              return (
+                <div className="mt-5 pl-3 border-top pt-3 w-75 mx-auto">
+                  <h6 className="my-4">Create a new device</h6>
+                  <Form>
+                    <div className="form-group">
+                      <label htmlFor="system_name" className="mb-3">
+                        Name of the System
+                      </label>
+                      <Field
+                        type="string"
+                        name="system_name"
+                        id="system_name"
+                        className={`${
+                          errors.system_name && touched.system_name
+                            ? "is-invalid"
+                            : "is-valid"
+                        } form-control`}
+                      />
+
+                      <ErrorMessage
+                        name="system_name"
+                        component="span"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="type" className="mt-3">
+                        Select the type of the device:
+                      </label>
+                      <Field
+                        name="type"
+                        as="select"
+                        className="my-select d-inline d-block mt-3 mb-3"
+                      >
+                        <option defaultValue>Select Type</option>
+                        <option value="WINDOWS_WORKSTATION">
+                          WINDOWS_WORKSTATION
+                        </option>
+                        <option value="WINDOWS_SERVER">WINDOWS_SERVER</option>
+                        <option value="MAC">MAC</option>
+                      </Field>
+
+                      <ErrorMessage
+                        name="type"
+                        component="span"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="hdd_capacity" className="mt-3 mb-3">
+                        Name of the System
+                      </label>
+                      <Field
+                        type="number"
+                        name="hdd_capacity"
+                        id="hdd_capacity"
+                        className={`${
+                          errors.hdd_capacity && touched.hdd_capacity
+                            ? "is-invalid"
+                            : "is-valid"
+                        } form-control`}
+                      />
+
+                      <ErrorMessage
+                        name="hdd_capacity"
+                        component="span"
+                        className="text-danger"
+                      />
+                    </div>
+
+                    <div className="mt-3">
+                      <button
+                        type="submit"
+                        className={`${
+                          !(dirty && isValid) ? "disabled-btn" : ""
+                        } btn btn-success`}
+                        disabled={!(dirty && isValid)}
+                      >
+                        Create new Device
+                      </button>
+                    </div>
+                  </Form>
+                  <div className="mt-3" />
+                  <p>{loading ? "" : message()}</p>
+                </div>
+              );
+            }}
+          </Formik>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
