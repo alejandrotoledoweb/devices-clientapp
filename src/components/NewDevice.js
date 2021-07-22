@@ -25,7 +25,6 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
       type: values.type,
       hdd_capacity: values.hdd_capacity
     };
-    console.log(loading, status);
     addDevice(data);
   };
 
