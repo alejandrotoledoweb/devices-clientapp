@@ -28,9 +28,27 @@ const Devices = ({
   const handleClose = () => setShow(false);
 
   const initialValues = {
+    id : deviceId,
     system_name: system_name,
     type: type,
     hdd_capacity: capacity
+  };
+
+  const appointmentSchema = Yup.object().shape({
+    system_name: Yup.string().required("System Name is required"),
+    type: Yup.string().required("System Type is required"),
+    hdd_capacity: Yup.number().required("Capacity is required")
+  });
+
+  const submitForm = (values) => {
+    const data = {
+      id : values.id,
+      system_name: values.system_name,
+      type: values.type,
+      hdd_capacity: values.hdd_capacity
+    };
+    updateDevice(data);
+    handleClose()
   };
 
   useEffect(() => {
@@ -47,11 +65,6 @@ const Devices = ({
     setType(type);
     setCapacity(capacity);
     setDeviceId(id);
-  };
-
-  const udpateDev = (system_name, type, capacity, deviceId) => {
-    updateDevice(system_name, type, capacity, deviceId);
-    handleClose();
   };
 
   if (loading) {
@@ -191,7 +204,7 @@ const Devices = ({
                       />
                     </div>
 
-                    <div className="mt-3">
+                    <div className="mt-3 mr-4 pr-3">
                       <button
                         type="submit"
                         className={`${
@@ -199,24 +212,20 @@ const Devices = ({
                         } btn btn-success`}
                         disabled={!(dirty && isValid)}
                       >
-                        Create new Device
+                        Update Device Info
                       </button>
+                      <Button variant="secondary" onClick={handleClose}>
+                        Close
+                      </Button>
                     </div>
                   </Form>
                   <div className="mt-3" />
-                  <p>{loading ? "" : message()}</p>
                 </div>
               );
             }}
           </Formik>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={udpateDev}>
-            Save Changes
-          </Button>
         </Modal.Footer>
       </Modal>
     </div>
@@ -245,8 +254,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchAllDevices: () => dispatch(fetchDevices()),
   deleteDevice: (id) => dispatch(deleteDevice(id)),
-  updateDevice: (system_name, type, capacity, deviceId) =>
-    dispatch(editDevice(system_name, type, capacity, deviceId))
+  updateDevice: (data) =>
+    dispatch(editDevice(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Devices);
