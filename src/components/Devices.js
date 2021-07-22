@@ -11,6 +11,8 @@ import Button from "react-bootstrap/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+// Add filters and sort buttons for devices
+
 const Devices = ({
   devices,
   loading,

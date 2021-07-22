@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-// I need to fix the loading error and display a succes message when created a new device
 const NewDevice = ({ addDevice, error, loading, status }) => {
   const initialValues = {
     system_name: "",
