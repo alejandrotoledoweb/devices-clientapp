@@ -79,7 +79,7 @@ const Devices = ({
         {devices.map((device) => (
           <div
             key={device.id}
-            className="border rounded container mt-3 mb-3 pb-4 d-flex justify-content-around flex-wrap"
+            className="border rounded container mt-3 mb-3 pb-2 d-flex justify-content-around flex-wrap"
           >
             <div className="mt-4 mr-4 pr-4">
               <p className="pl-2">
@@ -92,40 +92,48 @@ const Devices = ({
                 <strong>HDD Capacity:</strong> {device.hdd_capacity} gb
               </p>
             </div>
-            <div className="d-flex flex-row align-items-end justify-content-around">
-              <button
-                type="button"
-                className="btn btn-secondary btn-sm ml-3 mr-3 "
-                onClick={() =>
-                  selectDevice(
-                    device.system_name,
-                    device.type,
-                    device.hdd_capacity,
-                    device.id
-                  )
-                }
-              >
-                Edit Device
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger btn-sm ml-3 mr-3 pl-3 pr-3"
-                onClick={() => deleteDv(device.id)}
-              >
-                Delete Device
-              </button>
+            <div className="d-flex align-items-center">
+              <div className="pl-4 pr-4">
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm"
+                  onClick={() =>
+                    selectDevice(
+                      device.system_name,
+                      device.type,
+                      device.hdd_capacity,
+                      device.id
+                    )
+                  }
+                >
+                  Edit Device
+                </button>
+              </div>
+              
+              <div className="mr-1 ml-1">
+                <button
+                  type="button"
+                  className="btn btn-danger btn-sm"
+                  onClick={() => deleteDv(device.id)}
+                  >
+                  Delete Device
+                </button>
+              </div>
+              
             </div>
           </div>
         ))}
+        
       </div>
       <div className="col-md-1"></div>
+      
       <Modal show={show} animation={false} onHide={handleClose}>
         <Modal.Header>
           <Modal.Title>Update Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Formik
-            className="w-75"
+            className="w-100"
             initialValues={initialValues}
             validationSchema={appointmentSchema}
             onSubmit={(values) => {
@@ -135,8 +143,8 @@ const Devices = ({
             {(formik) => {
               const { errors, touched, isValid, dirty } = formik;
               return (
-                <div className="mt-5 pl-3 border-top pt-3 w-75 mx-auto">
-                  <h6 className="my-4">Create a new device</h6>
+                <div className="mt-2 pl-2 pt-2 mb-2 pb-4 w-75 mx-auto">
+                  <h5 className="my-4">Edit a device</h5>
                   <Form>
                     <div className="form-group">
                       <label htmlFor="system_name" className="mb-3">
@@ -206,16 +214,19 @@ const Devices = ({
                       />
                     </div>
 
-                    <div className="mt-3 mr-4 pr-3">
-                      <button
-                        type="submit"
-                        className={`${
-                          !(dirty && isValid) ? "disabled-btn" : ""
-                        } btn btn-success`}
-                        disabled={!(dirty && isValid)}
-                      >
-                        Update Device Info
-                      </button>
+                    <div className="mt-5 mt-3 d-flex justify-content-around">
+                      <div className="">
+                        <button
+                          type="submit"
+                          className={`${
+                            !(dirty && isValid) ? "disabled-btn" : ""
+                          } btn btn-success`}
+                          disabled={!(dirty && isValid)}
+                        >
+                          Update Device Info
+                        </button>
+                      </div>
+                      
                       <Button variant="secondary" onClick={handleClose}>
                         Close
                       </Button>
@@ -230,6 +241,7 @@ const Devices = ({
         <Modal.Footer>
         </Modal.Footer>
       </Modal>
+      
     </div>
   );
 };
