@@ -74,7 +74,9 @@ const Devices = ({
   }
 
   return (
-    <div className="container d-flex">
+    <div className="container border-top mt-5 pt-3">
+    <h3 className="mt-2 mb-4">List of devices</h3>
+      <div>
       <div className="col-md-8">
         {devices.map((device) => (
           <div
@@ -123,9 +125,12 @@ const Devices = ({
             </div>
           </div>
         ))}
-        
+        <footer className="text-center bold mt-4 mb-4 pt-5 pb-5">
+        ® Rights Reserved for Alejandro Toledo
+      </footer>
       </div>
-      <div className="col-md-1"></div>
+      </div>
+      
       
       <Modal show={show} animation={false} onHide={handleClose}>
         <Modal.Header>
