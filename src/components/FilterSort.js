@@ -5,7 +5,7 @@ const FilterSort = ({ handleFilter, handleSort, count }) => {
 
   return (
     <>
-      <div></div>
+      <div className="border mt-3 mb-3 w-25 "></div>
       <select className="mt-1 mb-2 mr-2 pr-2" onChange={handleFilter}>
         <option defaultValue>Filter: All</option>
         <option value="WINDOWS_WORKSTATION">Device Type: Windows Workstation</option>
@@ -18,6 +18,7 @@ const FilterSort = ({ handleFilter, handleSort, count }) => {
         <option value="system">Sort by: System Name</option>
         <option value="hdd">Sort by: HDD Capacity</option>
       </select>
+      <div className="border mt-3 mb-3 w-25 "></div>
     </>
   );
 };

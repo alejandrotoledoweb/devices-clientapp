@@ -36,6 +36,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
 
   return (
     <section>
+    <h3 className="w-100 mt-5 mb-2 d-flex justify-content-center">New Device form</h3>
       <Formik
         className="container w-50"
         initialValues={initialValues}
@@ -47,7 +48,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
         {(formik) => {
           const { errors, touched, isValid, dirty } = formik;
           return (
-            <div className="w-50 mt-5 pl-3 border-top mb-3 pb-3 border-bottom pt-3 mx-auto">
+            <div className="w-50 mt-4 pl-3 border-top mb-3 pb-3 border-bottom pt-3 mx-auto">
               <h6 className="my-4">Create a new device</h6>
               <Form>
                 <div className="form-group">

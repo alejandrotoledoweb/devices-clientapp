@@ -6,7 +6,7 @@ import "../styles/navbar.css";
 const Navbar = () => {
   return (
     <main className="w-25 container d-flex border-top border-bottom pt-3 pb-3 rounded mt-3 justify-content-around">
-      <h2>Devices App</h2>
+      <h4>Devices App</h4>
       <div>
       <Link to="/" className="btn btn-link">
         All Devices
