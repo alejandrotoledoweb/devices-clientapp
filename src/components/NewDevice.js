@@ -47,7 +47,7 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
         {(formik) => {
           const { errors, touched, isValid, dirty } = formik;
           return (
-            <div className="w-50 mt-5 pl-3 border-top pt-3 mx-auto">
+            <div className="w-50 mt-5 pl-3 border-top mb-3 pb-3 border-bottom pt-3 mx-auto">
               <h6 className="my-4">Create a new device</h6>
               <Form>
                 <div className="form-group">
@@ -139,8 +139,8 @@ const NewDevice = ({ addDevice, error, loading, status }) => {
       </Formik>
 
       <footer className="text-center bold mt-4 mb-4 pt-5 pb-5">
-          ® Rights Reserved for Alejandro Toledo
-        </footer>
+        ® Rights Reserved for Alejandro Toledo
+      </footer>
     </section>
     
     
