@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import FilterSort from "./FilterSort";
 
 // Add filters and sort buttons for devices
 
@@ -76,6 +77,7 @@ const Devices = ({
   return (
     <div className="container border-top mt-5 pt-3">
     <h3 className="mt-2 mb-4">List of devices</h3>
+    <FilterSort></FilterSort>
       <div>
       <div className="col-md-8">
         {devices.map((device) => (
