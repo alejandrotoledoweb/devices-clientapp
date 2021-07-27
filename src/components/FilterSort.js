@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FilterSort = ({ handleFilter, handleSort, count }) => {
+const FilterSort = ({ handleFilter, handleSort }) => {
 
   return (
     <>
