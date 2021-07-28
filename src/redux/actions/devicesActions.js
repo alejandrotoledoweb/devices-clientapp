@@ -68,9 +68,25 @@ export const editDevice = (data) => async (dispatch) => {
   }
 };
 
-export const set_filter = (filter) => (dispatch) => {
-  dispatch({ type: ActionTypes.SET_FILTER, payload: filter });
+export const set_filter = (filter) => async (dispatch) => {
+  if (filter !== "Filter: All"){
+    try {
+      const response = await apiUrl.get("/devices");
+      dispatch({ type: ActionTypes.SET_DEVICES, payload: response.data });
+    } catch (error) {
+      dispatch(set_Error(ActionTypes.SET_ERROR, error));
+    }
+    dispatch({ type: ActionTypes.SET_FILTER, payload: filter });
+  } else {
+    try {
+      const response = await apiUrl.get("/devices");
+      dispatch({ type: ActionTypes.SET_DEVICES, payload: response.data });
+    } catch (error) {
+      dispatch(set_Error(ActionTypes.SET_ERROR, error));
+    }
+  }
+  
 }
 export const set_sort = (sort) => (dispatch) => {
-  dispatch({ type: ActionTypes.SET_DEVICES, payload: sort });
+  dispatch({ type: ActionTypes.SET_SORT, payload: sort });
 }
