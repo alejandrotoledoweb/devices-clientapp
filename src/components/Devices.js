@@ -12,8 +12,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FilterSort from "./FilterSort";
 
-// Add filters and sort buttons for devices
-
 const Devices = ({
   devices,
   loading,
