@@ -20,16 +20,16 @@ const FilterSort = ({ handleFilter, handleSort }) => {
     <>
       <div className="border mt-3 mb-3 w-25 "></div>
       <select className="mt-1 mb-2 mr-2 pr-2" onChange={(e) => changeFilter(e.target.value)}>
-        <option defaultValue>Filter: All</option>
+        <option defaultValue="">Filter: All</option>
         <option value="WINDOWS_WORKSTATION">Device Type: Windows Workstation</option>
         <option value="WINDOWS_SERVER">Device Type: Windows Server</option>
         <option value="MAC">Device Type: Mac</option>
       </select>
       <div className="mr-1"></div>
       <select className="mt-1 mb-2 ml-2" onChange={e => changeSort(e.target.value)} >
-        <option defaultValue>Sort by: All</option>
-        <option value="system">Sort by: System Name</option>
-        <option value="hdd">Sort by: HDD Capacity</option>
+        <option defaultValue="">Sort by: All</option>
+        <option value="system_name">Sort by: System Name</option>
+        <option value="hdd_capacity">Sort by: HDD Capacity</option>
       </select>
       <div className="border mt-3 mb-3 w-25 "></div>
     </>
