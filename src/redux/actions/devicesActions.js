@@ -67,3 +67,10 @@ export const editDevice = (data) => async (dispatch) => {
     dispatch(set_Error(ActionTypes.SET_ERROR, error));
   }
 };
+
+export const set_filter = (filter) => (dispatch) => {
+  dispatch({ type: ActionTypes.SET_FILTER, payload: filter });
+}
+export const set_sort = (sort) => (dispatch) => {
+  dispatch({ type: ActionTypes.SET_DEVICES, payload: sort });
+}
