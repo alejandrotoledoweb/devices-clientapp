@@ -15,7 +15,8 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
         loading: false,
         devices: payload,
         error: "",
-        status: "set"
+        status: "set",
+        filter: "All"
       };
     case ActionTypes.SET_ERROR:
       return {
@@ -58,8 +59,50 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
         devices: state.devices.filter((device) => device.id !== payload),
         loading: false,
         error: "",
-        status: "filtered"
+        status: "filtered",
+        filter: "All"
       };
+    case ActionTypes.SET_FILTER:
+      return {
+        ...state,
+        devices: state.devices.filter((device) => device.type === payload),
+        loading: false,
+        error: "",
+        status: "filtered",
+        filter: payload
+      };
+    case ActionTypes.SET_SORT: {
+      if (payload === "Sorted by: All") {
+        return {
+          ...state,
+        devices: state.devices,
+        loading: false,
+        error: "",
+        status: "sorted",
+        sort: payload
+        }
+      } else if (payload === 'system_name') {
+        return {
+          ...state,
+          devices: state.devices.sort((a, b) =>
+          a.system_name > b.system_name ? 1 : -1),
+          loading: false,
+          error: "",
+          status: "sorted",
+          sort: payload
+        };
+      } else {
+        return {
+          ...state,
+          devices: state.devices.sort((a, b) =>
+          parseInt(a.hdd_capacity) > parseInt(b.hdd_capacity) ? 1 : -1),
+          loading: false,
+          error: "",
+          status: "sorted",
+          sort: payload
+        };
+      }
+    }
     default:
       return state;
   }
