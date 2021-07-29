@@ -1,93 +1,169 @@
-import React, { useState } from 'react'
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import React from "react";
+import { addDevice } from "../redux/actions/devicesActions";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
-const Devices = () => {
-    const [system, setSystem] = useState("");
-    const [type, setType] = useState("");
-    const [capacity, setCapacity] = useState("");
-    const [show, setShow] = useState(false);
-    const [showCreate, setShowCreate] = useState(false);
-    
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const handleCloseCreate = () => setShowCreate(false);
-    const handleShowCreate = () => setShowCreate(true);
-
-  const addDevice = () => {
-    if (system !== '' && type !== "" && capacity !== '') {
-      fetch("http://localhost:3000/devices", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          system_name: system,
-          type: type,
-          hdd_capacity: capacity
-        })
-      }).then(response => response.json());
-        // .then(newData => )
-      Array.from(document.querySelectorAll("input")).forEach(
-        input => (input.value = ""),
-        setSystem(""),
-        setType(""),
-        setCapacity(""),
-        handleShowCreate()
-      );
-    } else {
-      handleShow()
-    }
+const NewDevice = ({ addDevice, error, loading, status }) => {
+  const initialValues = {
+    system_name: "",
+    type: "",
+    hdd_capacity: ""
   };
 
+  const appointmentSchema = Yup.object().shape({
+    system_name: Yup.string().required("System Name is required"),
+    type: Yup.string().required("System Type is required"),
+    hdd_capacity: Yup.number().required("Capacity is required")
+  });
+
+  const submitForm = (values) => {
+    const data = {
+      system_name: values.system_name,
+      type: values.type,
+      hdd_capacity: values.hdd_capacity
+    };
+    addDevice(data);
+  };
+
+  const message = () =>
+    error === "" && status === "created" ? (
+      <span className="text-success">Device created successfully.</span>
+    ) : (
+      <span className="text-danger">{error}</span>
+    );
+
   return (
-    <div className="mb-5 container">
-      <div className="col-lg-4 col-md-6 col-sm-6 d-flex flex-column">
-      <h3 className="mt-3 mb-4">Enter the following information to create a new device</h3>
-      <p className="mt-2">Enter the name of the device</p>
-      <input className="mb-2 mt-2 rounded" id="input1" onChange={e => setSystem(e.target.value.toUpperCase())} placeholder="Alex Device" type="text" required/> <br></br>
-      <p className="mt-2">Select the device type</p>
-      <select className="w-100 mb-3" id="input2" onChange={e => setType(e.target.value)} required >
-        <option value="">Select</option>
-        <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
-        <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
-        <option value="MAC">MAC</option>
-      </select><br></br>
-      <p>Enter the disk capacity in GB</p>
-      <input className="mb-3 rounded" id="input3" onChange={e => setCapacity(e.target.value)} type="number" placeholder="512" required /><br></br>
-      <button className="btn btn-primary" onClick={addDevice}>Create new device</button>
-      </div>
+    <section>
+    <h3 className="w-100 mt-5 mb-2 d-flex justify-content-center">New Device form</h3>
+      <Formik
+        className="container w-50"
+        initialValues={initialValues}
+        validationSchema={appointmentSchema}
+        onSubmit={(values) => {
+          submitForm(values);
+        }}
+      >
+        {(formik) => {
+          const { errors, touched, isValid, dirty } = formik;
+          return (
+            <div className="w-50 mt-4 pl-3 border-top mb-3 pb-3 border-bottom pt-3 mx-auto">
+              <h6 className="my-4">Create a new device</h6>
+              <Form>
+                <div className="form-group">
+                  <label htmlFor="system_name" className="mb-3">
+                    Name of the System
+                  </label>
+                  <Field
+                    type="string"
+                    name="system_name"
+                    id="system_name"
+                    className={`${
+                      errors.system_name && touched.system_name
+                        ? "is-invalid"
+                        : "is-valid"
+                    } form-control`}
+                  />
+
+                  <ErrorMessage
+                    name="system_name"
+                    component="span"
+                    className="text-danger"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="type" className="mt-3">
+                    Select the type of the device:
+                  </label>
+                  <Field
+                    name="type"
+                    as="select"
+                    className="my-select d-inline d-block mt-3 mb-3"
+                  >
+                    <option defaultValue>Select Type</option>
+                    <option value="WINDOWS_WORKSTATION">
+                      WINDOWS_WORKSTATION
+                    </option>
+                    <option value="WINDOWS_SERVER">WINDOWS_SERVER</option>
+                    <option value="MAC">MAC</option>
+                  </Field>
+
+                  <ErrorMessage
+                    name="type"
+                    component="span"
+                    className="text-danger"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="hdd_capacity" className="mt-3 mb-3">
+                    Name of the System
+                  </label>
+                  <Field
+                    type="number"
+                    name="hdd_capacity"
+                    id="hdd_capacity"
+                    className={`${
+                      errors.hdd_capacity && touched.hdd_capacity
+                        ? "is-invalid"
+                        : "is-valid"
+                    } form-control`}
+                  />
+
+                  <ErrorMessage
+                    name="hdd_capacity"
+                    component="span"
+                    className="text-danger"
+                  />
+                </div>
+
+                <div className="mt-3">
+                  <button
+                    type="submit"
+                    className={`${
+                      !(dirty && isValid) ? "disabled-btn" : ""
+                    } btn btn-success`}
+                    disabled={!(dirty && isValid)}
+                  >
+                    Create new Device
+                  </button>
+                </div>
+              </Form>
+              <div className="mt-3" />
+              <p>{loading ? "" : message()}</p>
+            </div>
+          );
+        }}
       
+      </Formik>
 
-      <div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header>
-          <Modal.Title>Error</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Please fill all inputs with a value</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            OK
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showCreate} onHide={handleCloseCreate}>
-        <Modal.Header>
-          <Modal.Title>Info</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Device created successfully</Modal.Body>
-        <Modal.Footer>
-          <Button variant="success" onClick={handleCloseCreate}>
-            OK
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      </div>
-    </div>
+      <footer className="text-center bold mt-4 mb-4 pt-5 pb-5">
+        ® Rights Reserved for Alejandro Toledo
+      </footer>
+    </section>
+    
+    
   );
-}
+};
 
-export default Devices;
+NewDevice.defaultProps = {
+  addDevice: PropTypes.func
+};
+
+NewDevice.propTypes = {
+  addDevice: PropTypes.func
+};
+
+const mapStateToProps = (state) => ({
+  loading: state.allDevices.loading,
+  status: state.allDevices.status,
+  error: state.allDevices.error
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addDevice: (data) => dispatch(addDevice(data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewDevice);
