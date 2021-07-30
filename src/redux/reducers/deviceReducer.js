@@ -75,27 +75,35 @@ export const deviceReducer = (state = initialState, { type, payload }) => {
       if (payload === "Sorted by: All") {
         return {
           ...state,
-        devices: state.devices,
-        loading: false,
-        error: "",
-        status: "sorted",
-        sort: payload
-        }
-      } else if (payload === 'system_name') {
+          devices: state.devices,
+          loading: false,
+          error: "",
+          status: "sorted",
+          sort: payload
+        };
+      } else if (payload === "system_name") {
+        const allDevices = state.devices;
+        const sortedItems = allDevices.sort((a, b) => {
+          const changed = a.system_name > b.system_name ? 1 : -1;
+          return changed * a.system_name.localeCompare(b.system_name);
+        });
         return {
           ...state,
-          devices: state.devices.sort((a, b) =>
-          a.system_name > b.system_name ? 1 : -1),
+          devices: sortedItems,
           loading: false,
           error: "",
           status: "sorted",
           sort: payload
         };
       } else {
+        const allDevices = state.devices;
+        const sortedItems = allDevices.sort((a, b) => {
+          const changed = a.hdd_capacity > b.hdd_capacity ? 1 : -1;
+          return changed * a.hdd_capacity.localeCompare(b.hdd_capacity);
+        });
         return {
           ...state,
-          devices: state.devices.sort((a, b) =>
-          parseInt(a.hdd_capacity) > parseInt(b.hdd_capacity) ? 1 : -1),
+          devices: sortedItems,
           loading: false,
           error: "",
           status: "sorted",
