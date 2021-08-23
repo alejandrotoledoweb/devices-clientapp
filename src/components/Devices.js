@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   fetchDevices,
   deleteDevice,
-  editDevice
+  editDevice,
 } from "../redux/actions/devicesActions";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -17,7 +17,8 @@ const Devices = ({
   loading,
   fetchAllDevices,
   deleteDevice,
-  updateDevice
+  updateDevice,
+  handleSort
 }) => {
   const [system_name, setSystem] = useState("");
   const [type, setType] = useState("");
@@ -75,9 +76,10 @@ const Devices = ({
   return (
     <div className="container border-top mt-5 pt-3">
     <h3 className="mt-2 mb-4">List of devices</h3>
-    <FilterSort></FilterSort>
+    <FilterSort />
       <div>
       <div className="col-md-8">
+      {loading ? <span>Loading...</span> : ""}
         {devices.map((device) => (
           <div
             key={device.id}
@@ -254,7 +256,7 @@ const Devices = ({
 Devices.defaultProps = {
   fetchAllDevices: PropTypes.func,
   deleteDevice: PropTypes.func,
-  updateDevice: PropTypes.func
+  updateDevice: PropTypes.func,
 };
 
 Devices.propTypes = {
@@ -274,7 +276,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAllDevices: () => dispatch(fetchDevices()),
   deleteDevice: (id) => dispatch(deleteDevice(id)),
   updateDevice: (data) =>
-    dispatch(editDevice(data))
+  dispatch(editDevice(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Devices);
